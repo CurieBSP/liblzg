@@ -82,7 +82,7 @@ lzg_uint32_t LZG_DecodedSize(const unsigned char *in, lzg_uint32_t insize)
     return _LZG_GetUINT32(in, 3);
 }
 
-unsigned int LZG_Decode(const unsigned char *in, lzg_uint32_t insize,
+__attribute__((weak)) unsigned int LZG_Decode(const unsigned char *in, lzg_uint32_t insize,
     unsigned char *out, lzg_uint32_t outsize)
 {
     unsigned char *src, *inEnd, *dst, *outEnd, *copy, symbol, b, b2;
