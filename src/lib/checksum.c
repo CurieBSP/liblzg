@@ -48,7 +48,7 @@
     b += a; \
 } while(0)
 
-lzg_uint32_t _LZG_CalcChecksum(const unsigned char *data, lzg_uint32_t size)
+__attribute__((weak)) lzg_uint32_t _LZG_CalcChecksum(const unsigned char *data, lzg_uint32_t size)
 {
     unsigned short a = 1, b = 0;
     lzg_uint32_t size8, sizediv8;
