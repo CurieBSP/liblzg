@@ -26,9 +26,12 @@
 ################################################################################
 
 # Compiler and linker settings
+INTERMEDIATES = $(OUT)/tools/intermediates
+BINARIES = $(OUT)/tools/bin
+
 CC = gcc
 CFLAGS = -c -O3 -W -Wall -I../include
-LFLAGS = -L../lib
+LFLAGS = -L$(OUT)/tools/intermediates
 LIBS = -llzg
 RM = rm -f
 
@@ -51,17 +54,18 @@ ifeq ($(USE_LZO),YES)
 BM_CFLAGS += -DUSE_LZO
 BM_LIBS += -llzo2
 endif
+BM_CFLAGS += -L$(OUT)/tools/intermediates
 
 # Files
-LZG = lzg
-LZG_OBJS = lzg.o
-LZG_CRC = lzg_crc
-LZG_CRC_OBJS = lzg_crc.o
-UNLZG = unlzg
-UNLZG_OBJS = unlzg.o
-BENCHMARK = benchmark
-BENCHMARK_OBJS = benchmark.o
-STATIC_LIB = ../lib/liblzg.a
+LZG = $(BINARIES)/lzg
+LZG_OBJS = $(INTERMEDIATES)/lzg.o
+LZG_CRC = $(BINARIES)/lzg_crc
+LZG_CRC_OBJS = $(INTERMEDIATES)/lzg_crc.o
+UNLZG = $(BINARIES)/unlzg
+UNLZG_OBJS = $(INTERMEDIATES)/unlzg.o
+BENCHMARK = $(BINARIES)/benchmark
+BENCHMARK_OBJS = $(INTERMEDIATES)/benchmark.o
+STATIC_LIB = $(INTERMEDIATES)/liblzg.a
 
 .PHONY: all clean
 
@@ -87,15 +91,15 @@ $(BENCHMARK): $(BENCHMARK_OBJS) $(STATIC_LIB)
 	$(CC) $(LFLAGS) -o $@ $(BENCHMARK_OBJS) $(BM_LIBS)
 
 # Object files build rules
-lzg.o: lzg.c ../include/lzg.h
-	$(CC) $(CFLAGS) $<
+$(LZG_OBJS): lzg.c ../include/lzg.h
+	$(CC) $(CFLAGS) -o $@ $<
 
-lzg_crc.o: lzg_crc.c ../include/lzg.h
-	$(CC) $(CFLAGS) $<
+$(LZG_CRC_OBJS): lzg_crc.c ../include/lzg.h
+	$(CC) $(CFLAGS) -o $@ $<
 
-unlzg.o: unlzg.c ../include/lzg.h
-	$(CC) $(CFLAGS) $<
+$(UNLZG_OBJS): unlzg.c ../include/lzg.h
+	$(CC) $(CFLAGS) -o $@ $<
 
-benchmark.o: benchmark.c ../include/lzg.h
-	$(CC) $(BM_CFLAGS) $<
+$(BENCHMARK_OBJS): benchmark.c ../include/lzg.h
+	$(CC) $(BM_CFLAGS) -o $@ $<
 

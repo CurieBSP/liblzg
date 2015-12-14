@@ -26,6 +26,9 @@
 ################################################################################
 
 # Compiler and linker settings
+INTERMEDIATES = $(OUT)/tools/intermediates
+BINARIES = $(OUT)/tools/bin
+
 CC = gcc
 CFLAGS = -c -O3 -funroll-loops -W -Wall
 AR = ar
@@ -33,11 +36,11 @@ ARFLAGS = -rcs
 RM = rm -f
 
 # Files
-STATIC_LIB = liblzg.a
-OBJS = encode.o \
-       decode.o \
-       checksum.o \
-       version.o
+STATIC_LIB = $(INTERMEDIATES)/liblzg.a
+OBJS = $(INTERMEDIATES)/encode.o \
+       $(INTERMEDIATES)/decode.o \
+       $(INTERMEDIATES)/checksum.o \
+       $(INTERMEDIATES)/version.o
 
 # Master rule
 all: $(STATIC_LIB)
@@ -51,15 +54,15 @@ $(STATIC_LIB): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $(OBJS)
 
 # Object files build rules
-encode.o: encode.c internal.h ../include/lzg.h
-	$(CC) $(CFLAGS) $<
+$(INTERMEDIATES)/encode.o: encode.c internal.h ../include/lzg.h
+	$(CC) $(CFLAGS) -o $@ $<
 
-decode.o: decode.c internal.h ../include/lzg.h
-	$(CC) $(CFLAGS) $<
+$(INTERMEDIATES)/decode.o: decode.c internal.h ../include/lzg.h
+	$(CC) $(CFLAGS) -o $@ $<
 
-checksum.o: checksum.c internal.h ../include/lzg.h
-	$(CC) $(CFLAGS) $<
+$(INTERMEDIATES)/checksum.o: checksum.c internal.h ../include/lzg.h
+	$(CC) $(CFLAGS) -o $@ $<
 
-version.o: version.c internal.h ../include/lzg.h
-	$(CC) $(CFLAGS) $<
+$(INTERMEDIATES)/version.o: version.c internal.h ../include/lzg.h
+	$(CC) $(CFLAGS) -o $@ $<
 
