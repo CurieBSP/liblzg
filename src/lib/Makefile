@@ -30,7 +30,7 @@ INTERMEDIATES = $(OUT)/tools/intermediates
 BINARIES = $(OUT)/tools/bin
 
 CC = gcc
-CFLAGS = -c -O3 -funroll-loops -W -Wall
+CFLAGS = -c -O3 -funroll-loops -W -Wall -Werror
 AR = ar
 ARFLAGS = -rcs
 RM = rm -f
