@@ -28,30 +28,38 @@
 # Compiler and linker settings
 INTERMEDIATES = $(OUT)/tools/intermediates
 BINARIES = $(OUT)/tools/bin
+LIBS = $(OUT)/tools/lib
 
 CC = gcc
-CFLAGS = -c -O3 -funroll-loops -W -Wall -Werror
+CFLAGS = -c -O3 -funroll-loops -W -Wall -Werror -fPIC
 AR = ar
 ARFLAGS = -rcs
 RM = rm -f
 
 # Files
 STATIC_LIB = $(INTERMEDIATES)/liblzg.a
+SHARED_LIB = $(LIBS)/liblzg.so
 OBJS = $(INTERMEDIATES)/encode.o \
        $(INTERMEDIATES)/decode.o \
        $(INTERMEDIATES)/checksum.o \
        $(INTERMEDIATES)/version.o
 
 # Master rule
-all: $(STATIC_LIB)
+all: $(STATIC_LIB) $(SHARED_LIB)
 
 # Clean rule
 clean:
 	$(RM) $(STATIC_LIB) $(OBJS)
 
 # Library build rule
-$(STATIC_LIB): $(OBJS)
+$(STATIC_LIB): $(OBJS) 
 	$(AR) $(ARFLAGS) $@ $(OBJS)
+
+$(LIBS):
+	mkdir -p $@
+
+$(SHARED_LIB): $(OBJS) $(LIBS)
+	$(LD) -shared -o $@ $(OBJS)
 
 # Object files build rules
 $(INTERMEDIATES)/encode.o: encode.c internal.h ../include/lzg.h

@@ -25,10 +25,10 @@
 #    distribution.
 ################################################################################
 
-.PHONY: all clean build-library build-tools
+.PHONY: all clean build-library build-tools deploy-bindings
 
 # Master rule
-all: build-library build-tools
+all: build-library build-tools deploy-bindings
 
 # Clean rule
 clean:
@@ -42,4 +42,8 @@ build-library:
 # Tools build rule
 build-tools:
 	cd tools && $(MAKE)
+
+# Deploy bindings
+deploy-bindings:
+	cd extra && $(MAKE)
 
