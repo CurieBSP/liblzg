@@ -25,15 +25,18 @@ import ctypes
 liblzg = ctypes.CDLL('liblzg.so')
 
 class LZGConfig(ctypes.Structure):
-    _fields = [
-        ('level', ctypes.c_int32),
-        ('fast', ctypes.c_int),
+    _pack_ = 1
+    _fields_ = [
+        ("level", ctypes.c_int32),
+        ("fast", ctypes.c_int),
+        ("callback", ctypes.c_void_p),
+        ("data", ctypes.c_void_p)
     ]
 
 class LZG:
 
-    def __init__(self, level=9, fast=False):
-        self.lzg_config = LZGConfig(level=level, fast=False)
+    def __init__(self, level=9, fast=True):
+        self.lzg_config = LZGConfig(level=level, fast=True, callback = None, data = None)
 
     def decompress(self, c_buffer):
         assert (c_buffer != None)
